@@ -19,21 +19,31 @@ public class Solution {
  
     public void getCheckboxValue(String src) throws IOException {
     	
-    	PdfReader reader = new PdfReader( src);
+    	PdfReader reader = new PdfReader("fillable_form.pdf");
     	AcroFields fields = reader.getAcroFields();
-    	Set<String> fldNames = fields.getFields().keySet();
-    	for (String fldName : fldNames) {
-    	  System.out.println( fldName + ": " + fields.getField( fldName ) );
-    	}
+    	
+//    	Set<String> fldNames = fields.getFields().keySet();
+//    	for (String fldName : fldNames) {
+//    	  System.out.println( fldName + ": " + fields.getField( fldName ) );
+//    	}
     	
         Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/SAE_Report_Form", "root", "8515111q");
-//        patients p = new patients();
-//        p.set("assignedCaseNum", fields.getField(fields.getFields().toString()));
-//        p.set("dateOfBirthDD", "test3");
-//        p.saveIt();
-    	
-        p.saveIt();
-    	Base.close();
+
+	    patientinformations p = new patientinformations();
+	    p.set("PatientNum", fields.getField("Section1_Patient#").toString());
+	    p.set("AssignedCaseNum", fields.getField("Section0_AssignedCase#").toString());
+	    p.set("PatientInitials", fields.getField("Section1_PatientInitials").toString());
+	    p.set("DateOfBirth_DD", fields.getField("Section1_DateOfBirth_DD").toString());
+	    p.set("DateOfBirth_MMM", fields.getField("Section1_DateOfBirth_MMM").toString());
+	    p.set("DateOfBirth_YYYY", fields.getField("Section1_DateOfBirth_YYYY").toString());
+	    p.set("SEX", fields.getField("Section1_Sex_Radio").toString());
+	    p.set("Weight", fields.getField("Section1_Weight").toString());
+		p.set("Weight_Unit", fields.getField("Section1_Weight_Unit_Radio").toString());
+	    p.set("Height", fields.getField("Section1_Height").toString());
+	  p.set("Height_Unit", fields.getField("Section1_Height_Radio").toString());
+	  p.set("Race", fields.getField("Section1_Race_Radio").toString());
+	  p.saveIt();
+	  Base.close();
     	
     }
 }
